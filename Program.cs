@@ -1,7 +1,14 @@
+using CadastroContatos.DataBase;
+using CadastroContatos.Interfaces;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Adicionando o serviço de contêiner de injeção de dependência
+builder.Services.AddScoped<IUsuario, UsuarioDb>();
 
 var app = builder.Build();
 
