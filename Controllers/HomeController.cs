@@ -1,19 +1,21 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using CadastroContatos.Models;
-using CadastroContatos.DataBase;
 using CadastroContatos.ViewModels;
 using CadastroContatos.Services;
+using CadastroContatos.Interfaces;
 
 namespace CadastroContatos.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IUsuario _usuarioDb;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IUsuario usuarioDb)
     {
         _logger = logger;
+        _usuarioDb = usuarioDb;
     }
 
     public IActionResult Index()
@@ -31,6 +33,27 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpPost]
+    public IActionResult Login(ContaModel conta)
+    {
+        if (!ModelState.IsValid)
+        {
+            ModelState.AddModelError(string.Empty, "Email ou senha inválidos");
+            return View();
+        }
+
+        UsuarioModel usuario = new();
+        usuario = _usuarioDb.Login(conta.Email, conta.Senha);
+
+        if (usuario == null)
+        {
+            ModelState.AddModelError(string.Empty, "Email ou senha inválidos");
+            return View();
+        }
+
+        return RedirectToAction("Index", "Contato");
+    }
+
     public IActionResult Registrar()
     {
         return View();
@@ -39,6 +62,12 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult Registrar(RegistroViewModel registro)
     {
+        if (registro.Senha != registro.ConfirmacaoSenha)
+        {
+            ModelState.AddModelError(string.Empty,"As senhas não conferem");
+            return View();
+        }
+
         if (ModelState.IsValid)
         {
             UsuarioModel usuario = new UsuarioModel
@@ -55,7 +84,7 @@ public class HomeController : Controller
             conta.Salt = HashService.Salt();
             conta.Senha = HashService.Hash(conta.Senha, conta.Salt);
 
-            int i = UsuarioDb.CadastraUsuario(usuario, conta);
+            int i = _usuarioDb.CadastraUsuario(usuario, conta);
 
             if (i == 0)
             {
@@ -66,7 +95,7 @@ public class HomeController : Controller
                 ModelState.AddModelError(string.Empty, "Erro ao cadastrar usuário");
             }
         }
-        return View();
+        return RedirectToAction("Login", "Home");;
     }
     
 
