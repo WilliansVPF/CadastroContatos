@@ -9,17 +9,18 @@ namespace CadastroContatos.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
     private readonly IUsuario _usuarioDb;
+    private readonly ISessao _sessao;
 
-    public HomeController(ILogger<HomeController> logger, IUsuario usuarioDb)
+    public HomeController(IUsuario usuarioDb, ISessao sessao)
     {
-        _logger = logger;
         _usuarioDb = usuarioDb;
+        _sessao = sessao;
     }
 
     public IActionResult Index()
     {
+        if(_sessao.BuscarSessao() != null) return RedirectToAction("Index", "Contato");
         return View();
     }
 
@@ -30,6 +31,7 @@ public class HomeController : Controller
 
     public IActionResult Login()
     {
+        if(_sessao.BuscarSessao() != null) return RedirectToAction("Index", "Contato");
         return View();
     }
 
@@ -50,12 +52,13 @@ public class HomeController : Controller
             ModelState.AddModelError(string.Empty, "Email ou senha inválidos");
             return View();
         }
-
+        _sessao.CriarSessao(usuario);
         return RedirectToAction("Index", "Contato");
     }
 
     public IActionResult Registrar()
     {
+        if(_sessao.BuscarSessao() != null) return RedirectToAction("Index", "Contato");
         return View();
     }
 

@@ -1,14 +1,28 @@
 using CadastroContatos.DataBase;
 using CadastroContatos.Interfaces;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using CadastroContatos.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
+
 // Adicionando o serviço de contêiner de injeção de dependência
 builder.Services.AddScoped<IUsuario, UsuarioDb>();
+builder.Services.AddScoped<ISessao, SessionService>();
+
+builder.Services.AddSession(
+    o =>
+    {
+        o.IdleTimeout = TimeSpan.FromMinutes(30);
+        o.Cookie.HttpOnly = true;
+        o.Cookie.IsEssential = true;
+    }
+);
 
 var app = builder.Build();
 
@@ -26,6 +40,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
