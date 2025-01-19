@@ -1,0 +1,45 @@
+@{
+    ViewData["Title"] = "Novo Contatos";
+}
+
+@* <link rel="stylesheet" href="~/css/NovoContato.css" asp-append-version="true" />  *@
+
+<div>
+    <h1 class="borda">Novo Contato</h1>
+    <a class="btn btn-success" style="width: 50px;height: 50px; border-radius: 100%; align-content: center;" asp-action="Index"><i
+            class="fa-solid fa-arrow-left fa-lg"></i></a>
+    <form method="post" asp-action="NovoContato">
+        <div class="mb-3">
+            <label class="form-label" for="nome">Nome</label>
+            <input class="form-control" id="nome" type="text" placeholder="Nome" required />
+            <div class="invalid-feedback" data-sb-feedback="nome:required">Nome is required.</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="tipo">Tipo</label>
+            <select class="form-select" id="tipo" aria-label="Tipo">
+                <option value="1">Telefone</option>
+                <option value="2">Celular</option>
+                <option value="3">E-Mail</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="contato">Contato</label>
+            <input class="form-control" id="contato" type="text" placeholder="Contato" required />
+            <div class="invalid-feedback" data-sb-feedback="contato:required">Contato is required.</div>
+        </div>
+        <div class="d-none" id="submitSuccessMessage">
+            <div class="text-center mb-3">
+                <div class="fw-bolder">Form submission successful!</div>
+                <p>To activate this form, sign up at</p>
+                <a
+                    href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+            </div>
+        </div>
+        <div class="d-none" id="submitErrorMessage">
+            <div class="text-center text-danger mb-3">Error sending message!</div>
+        </div>
+        <div class="d-grid">
+            <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
