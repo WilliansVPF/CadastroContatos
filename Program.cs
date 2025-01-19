@@ -1,3 +1,4 @@
+using CadastroContatos.Filters;
 using CadastroContatos.DataBase;
 using CadastroContatos.Interfaces;
 using CadastroContatos.Services;
@@ -14,6 +15,8 @@ builder.Services.AddSingleton<HttpContextAccessor, HttpContextAccessor>();
 // Adicionando o serviço de contêiner de injeção de dependência
 builder.Services.AddScoped<IUsuario, UsuarioDb>();
 builder.Services.AddScoped<ISessao, SessionService>();
+
+builder.Services.AddScoped<ValidarSessaoAttribute>();
 
 builder.Services.AddSession(
     o =>
