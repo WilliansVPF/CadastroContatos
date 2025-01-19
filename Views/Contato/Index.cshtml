@@ -1,8 +1,34 @@
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Contatos";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Contato</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-primary text-right" asp-controller="Contato" asp-action="NovoContato">Novo Contato +</a>
+    </div>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Contato</th>
+                <th scope="col">Contato</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Mark</td>
+                <td>Telefone</td>
+                <td>31523146</td>
+                <td><button class="btn btn-warning me-1">Editar</button><button class="btn btn-danger ms-1">Excluir</button></td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>E-mail</td>
+                <td>email@email.com</td>
+                <td><button class="btn btn-warning">Editar</button><button class="btn btn-danger">Excluir</button></td>
+            </tr>            
+        </tbody>
+    </table>
 </div>
